@@ -4,24 +4,23 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.trainers import ListTrainer
 from flask_socketio import SocketIO
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret'
-socketio = SocketIO(app)
-
-bot = ChatBot("Bender")
-trainer = ChatterBotCorpusTrainer(bot)
+flaskApp = Flask(__name__)
+flaskApp.config['SECRET_KEY'] = 'secret'
+socket = SocketIO(flaskApp)
+AIBot = ChatBot("Bender")
+trainer = ChatterBotCorpusTrainer(AIBot)
 trainer.train("chatterbot.corpus.spanish")
 trainer.train("chatterbot.corpus.spanish.greetings")
 trainer.train("chatterbot.corpus.spanish.conversations")
 
-@app.route("/")
+@flaskApp.route("/")
 def home():    
     return render_template("home.html") 
 
-@app.route("/get")
+@flaskApp.route("/get")
 def get_bot_response():    
-    userText = request.args.get('msg')    
-    return str(bot.get_response(userText)) 
+    userMsg = request.args.get('msg')    
+    return str(AIBot.get_response(userMsg)) 
 
 if __name__ == "__main__":    
-    socketio.run(app)
+    socket.run(flaskApp)
