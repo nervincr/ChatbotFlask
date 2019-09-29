@@ -2,11 +2,9 @@ from flask import Flask, render_template, request
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.trainers import ListTrainer
-from flask_socketio import SocketIO
 
 flaskApp = Flask(__name__)
 flaskApp.config['SECRET_KEY'] = 'secret'
-socket = SocketIO(flaskApp)
 AIBot = ChatBot("Bender")
 trainer = ChatterBotCorpusTrainer(AIBot)
 trainer.train("chatterbot.corpus.spanish")
@@ -23,4 +21,4 @@ def get_bot_response():
     return str(AIBot.get_response(userMsg)) 
 
 if __name__ == "__main__":    
-    socket.run(flaskApp)
+    flaskApp.run()
